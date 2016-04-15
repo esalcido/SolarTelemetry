@@ -25,19 +25,15 @@ public class SerialTest {
         DataOutputStream outs = new DataOutputStream(serial.getOutputStream());
 
         String b2hex="";
+        StringBuilder sb1 = new StringBuilder();
 
         byte [] bytes = new byte[1];
-        int len= -1;
-
-        int i =0;
+        int len= -1, i =0;
         char c,c2,c3,c4;
         byte [] bs = new byte[4];
-        StringBuilder sb1 = new StringBuilder();
 
         try
         {
-
-
 
 //FET Temperature
             byte [] fetTempbs  = new byte[4];
@@ -68,6 +64,12 @@ public class SerialTest {
 
             String absorbString = bytesToHex(absorbbs);
             System.out.println("vBatt Hex: " + absorbString);
+
+for(int j=0;j<4;j++) {
+    b2hex = fetchValue(absorbbs, ins, outs);
+
+    System.out.println(b2hex);
+}
 
 //send requests
 //            outs.write( fetTempbs);
@@ -211,61 +213,61 @@ public class SerialTest {
 //            System.out.println(b2hex);
 
 
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            Thread.sleep(1000);
-            outs.write( absorbbs);
-            Thread.sleep(2000);
-            outs.write( absorbbs);
-            Thread.sleep(3000);
-            i = ins.read(bs);
-            System.out.println(" number of bytes read: "+ i);
-            System.out.print(" bytes read: " );
-            b2hex = bytesToHex(bs);
-            System.out.println(b2hex);
-
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            Thread.sleep(1000);
-            outs.write( absorbbs);
-            Thread.sleep(2000);
-            outs.write( absorbbs);
-            Thread.sleep(3000);
-            i = ins.read(bs);
-            System.out.println(" number of bytes read: "+ i);
-            System.out.print(" bytes read: " );
-            b2hex = bytesToHex(bs);
-            System.out.println(b2hex);
-
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            Thread.sleep(1000);
-            outs.write( absorbbs);
-            Thread.sleep(2000);
-            outs.write( absorbbs);
-            Thread.sleep(3000);
-            i = ins.read(bs);
-            System.out.println(" number of bytes read: "+ i);
-            System.out.print(" bytes read: " );
-            b2hex = bytesToHex(bs);
-            System.out.println(b2hex);
-
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            outs.write( absorbbs);
-            Thread.sleep(1000);
-            outs.write( absorbbs);
-            Thread.sleep(2000);
-            outs.write( absorbbs);
-            Thread.sleep(3000);
-            i = ins.read(bs);
-            System.out.println(" number of bytes read: "+ i);
-            System.out.print(" bytes read: " );
-            b2hex = bytesToHex(bs);
-            System.out.println(b2hex);
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            Thread.sleep(1000);
+//            outs.write( absorbbs);
+//            Thread.sleep(2000);
+//            outs.write( absorbbs);
+//            Thread.sleep(3000);
+//            i = ins.read(bs);
+//            System.out.println(" number of bytes read: "+ i);
+//            System.out.print(" bytes read: " );
+//            b2hex = bytesToHex(bs);
+//            System.out.println(b2hex);
+//
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            Thread.sleep(1000);
+//            outs.write( absorbbs);
+//            Thread.sleep(2000);
+//            outs.write( absorbbs);
+//            Thread.sleep(3000);
+//            i = ins.read(bs);
+//            System.out.println(" number of bytes read: "+ i);
+//            System.out.print(" bytes read: " );
+//            b2hex = bytesToHex(bs);
+//            System.out.println(b2hex);
+//
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            Thread.sleep(1000);
+//            outs.write( absorbbs);
+//            Thread.sleep(2000);
+//            outs.write( absorbbs);
+//            Thread.sleep(3000);
+//            i = ins.read(bs);
+//            System.out.println(" number of bytes read: "+ i);
+//            System.out.print(" bytes read: " );
+//            b2hex = bytesToHex(bs);
+//            System.out.println(b2hex);
+//
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            outs.write( absorbbs);
+//            Thread.sleep(1000);
+//            outs.write( absorbbs);
+//            Thread.sleep(2000);
+//            outs.write( absorbbs);
+//            Thread.sleep(3000);
+//            i = ins.read(bs);
+//            System.out.println(" number of bytes read: "+ i);
+//            System.out.print(" bytes read: " );
+//            b2hex = bytesToHex(bs);
+//            System.out.println(b2hex);
 
 
 
@@ -278,6 +280,29 @@ public class SerialTest {
 
 
     }
+
+    public static String fetchValue(byte [] bs, DataInputStream ins, DataOutputStream outs)throws IOException, InterruptedException{
+
+        String b2hex = "";
+        int i;
+
+        outs.write( bs);
+            Thread.sleep(1000);
+            outs.write( bs);
+            Thread.sleep(2000);
+            outs.write( bs);
+            outs.write( bs);
+            outs.write( bs);
+            Thread.sleep(3000);
+            i = ins.read(bs);
+            System.out.println(" number of bytes read: "+ i);
+            System.out.print(" bytes read: " );
+            b2hex = bytesToHex(bs);
+            System.out.println(b2hex);
+
+        return b2hex;
+    }
+
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
     public static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
