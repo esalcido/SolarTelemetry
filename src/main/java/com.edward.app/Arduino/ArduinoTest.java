@@ -167,7 +167,7 @@ fin.close();
         StringBuilder sb = new StringBuilder();
         int val = bytes[0] & PK_TYPE_SET_mask;
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         //Print when a PK_TYPE_SET is found
         if (val == 128) {
@@ -179,7 +179,7 @@ fin.close();
                 //sb.append(String.format("%16s ", Integer.toBinaryString(b).replace(' ','0')));
                 //fos.write(b);
             }
-           // System.out.println(sb );
+            System.out.println(sb );
 
 
             String byteString = bytesToHex(bytes);
@@ -192,7 +192,7 @@ fin.close();
 
 
             //print the Values coming in from the kid
-           printValues(register_name,register_data);
+           //printValues(register_name,register_data);
 
 
 
