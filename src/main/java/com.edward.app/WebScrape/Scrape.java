@@ -7,8 +7,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.sql.Timestamp;
+
 
 /**
  * Created by edwardsalcido on 4/7/16.
@@ -17,32 +20,78 @@ public class Scrape {
 
     public static void main(String [] args) throws IOException{
 
+        //get timestamp for wunderground
+        Timestamp ts=null;
+        Timestamp ts2=null;
+
+        Date date = new Date();
+        long time = date.getTime();
+        ts = new Timestamp(time);
+
+        Date date2 = new Date();
+        long time2 = date2.getTime();
+        ts2= new Timestamp(time);
+
+        String htmlfileDirectory = "/home/edwardsalcido/Desktop/weatherdata/htmldata/"+ts+"-wunderground-html.txt";
+        String intellicastDirectory = "/home/edwardsalcido/Desktop/weatherdata/htmldata/"+ts+"-intellicast-html.txt";
 
 
-        File html = new File("/home/edwardsalcido/Desktop/wunderground-html.txt");
-        FileWriter fw = new FileWriter(html,true);
+        //files
+        File wundergroundhtml = new File(htmlfileDirectory);
+        File intellicasthtml = new File(intellicastDirectory);
+
+        FileWriter fw = new FileWriter(wundergroundhtml,true);
+        FileWriter fwIntellicast = new FileWriter(intellicasthtml,true);
+
+        //bufferedwriters
         BufferedWriter bw = new BufferedWriter(fw);
-        if(!html.exists() ){
-            html.createNewFile();
+        if(!wundergroundhtml.exists() ){
+            wundergroundhtml.createNewFile();
         }
-
-        File datahtml = new File("/home/edwardsalcido/Desktop/wunderground-data-html.txt");
-        FileWriter datafw = new FileWriter(datahtml,true);
-        BufferedWriter databw = new BufferedWriter(datafw);
-        if(!html.exists() ){
-            html.createNewFile();
+        BufferedWriter bwIntellicast = new BufferedWriter(fwIntellicast);
+        if(!intellicasthtml.exists() ){
+            intellicasthtml.createNewFile();
         }
-
 
         //grab data from web and save to a file
-        writeToFile("https://www.wunderground.com/history/airport/KVNY/2016/04/21/DailyHistory.html?req_city=Valley%20Glen&req_state=CA&reqdb.zip=91401&reqdb.magic=3&reqdb.wmo=99999&MR=1", bw);
+        String urlWunder = "https://www.wunderground.com/history/airport/KVNY/2016/4/22/DailyHistory.html?req_city=Valley+Glen&req_state=CA&req_statename=&reqdb.zip=91401&reqdb.magic=3&reqdb.wmo=99999";
+        writeToFile(urlWunder, bw);
+
+        //grab data from web and save to a file
+        String urlIntellicast = "http://www.intellicast.com/";
+        writeToFile(urlIntellicast, bwIntellicast);
+
+        //=========================================================================================================================================
+        //data
+        File dataF = new File("/home/edwardsalcido/Desktop/weatherdata/data/weatherdata.txt");
+        FileWriter datawriter = new FileWriter(dataF,true);
+        BufferedWriter dataBuffer = new BufferedWriter(datawriter);
+        if(!wundergroundhtml.exists() ){
+            wundergroundhtml.createNewFile();
+        }
+
+        //data for wunderground
+//        File datahtml = new File("/home/edwardsalcido/Desktop/weatherdata/data/"+ts+"-wunderground-data-html.txt");
+//        FileWriter datafw = new FileWriter(datahtml,true);
+//        BufferedWriter databw = new BufferedWriter(datafw);
+//        if(!wundergroundhtml.exists() ){
+//            wundergroundhtml.createNewFile();
+//        }
+//
+//        //data for intellicast
+//        File datahtmlintellicast = new File("/home/edwardsalcido/Desktop/weatherdata/data/"+ts+"-intellicast-data-html.txt");
+//        FileWriter datafwintellicast = new FileWriter(datahtmlintellicast,true);
+//        BufferedWriter databwintellicast = new BufferedWriter(datafwintellicast);
+//        if(!intellicasthtml.exists() ){
+//            intellicasthtml.createNewFile();
+//        }
+
 
 
 
         //extract data from the saved file
-        File input = html;
-
-        Document doc = Jsoup.parse(input,"UTF-8");
+        File wundergroundinput = wundergroundhtml;
+        Document doc = Jsoup.parse(wundergroundinput,"UTF-8");
 
         Element content = doc.getElementById("historyTable");
         Elements td = content.getElementsByTag("td");
@@ -52,12 +101,12 @@ public class Scrape {
 
 
             if(temperatureName.equals("Mean Temperature")){
-                System.out.println(temperatureName);
-                datafw.write(temperatureName+ " ");
+                //System.out.println(temperatureName);
+                dataBuffer.write(ts+ "\t"+ urlWunder+ "\t" +temperatureName+ "\t");
 
                 String  temperature =  elmnt.nextElementSibling().text();
-                System.out.println(temperature);
-                databw.write(temperature+"\n");
+                //System.out.println(temperature);
+                dataBuffer.write( temperature+"\n");
 
 
                 break;
@@ -65,12 +114,35 @@ public class Scrape {
 
         }
 
+        //==================================================================================
+
+        //extract data from the saved file
+        File intellicastinput = intellicasthtml;
+        Document docIntellicast = Jsoup.parse(intellicastinput,"UTF-8");
+
+        Element contentI = docIntellicast.getElementById("cities");
+        Elements tdI = contentI.getElementsByTag("td");
+        for(Element elm: tdI){
+            String location = elm.text();
+
+            if(location.equals("Los Angeles, CA")){
+                System.out.print(ts2+ "\t" + urlIntellicast+"\t" +location + "\t");
+                dataBuffer.write(ts2+ "\t" +urlIntellicast+ "\t" + location + "\t");
+
+                String temperatureI = elm.nextElementSibling().text();
+                dataBuffer.write(temperatureI +"\n");
+                System.out.println(temperatureI +"\n");
+
+
+            }
+        }
 
 
         //close files
-        databw.close();
+        dataBuffer.close();
+        //databw.close();
         bw.close();
-
+        bwIntellicast.close();
 
     }
 
