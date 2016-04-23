@@ -1,1 +1,4 @@
+com/edward/app/Battery/Battery.class
 com/edward/app/Arduino/ArduinoTest.class
+com/edward/app/Serial/Word.class
+com/edward/app/Serial/SerialTest.class

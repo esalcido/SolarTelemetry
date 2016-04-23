@@ -1,4 +1,4 @@
-package com.edward.app.Serial.com.edward.app.Serial;
+package com.edward.app.Serial;
 
 import gnu.io.NRSerialPort;
 
@@ -49,59 +49,31 @@ public class SerialTest1call {
 
 
             //===================================================================== command
-//            String varName1 = "vPV";
-//            byte [] varBs1  = new byte[4];
-//            createByte2Send(varName1, varBs1,201,0,0,0);
-//
-//            Timestamp ts1=null;
-//            //get timestamp
-//            Date date1 = new Date();
-//            long time1 = date1.getTime();
-//            ts1 = new Timestamp(time1);
-//
-//            outs.write(varBs1);
-//            outs.write(varBs1);
-//            outs.write(varBs1);
-//            Thread.sleep(4000);
-//            outs.write(varBs1);
-//            outs.write(varBs1);
-//            outs.write(varBs1);
-//            outs.write(varBs1);
-//            ins.read(varBs1);
-//            b2hex = bytesToHex(varBs1);
-//            b2hex = checkValidHeader(b2hex,"89",varBs1,1000,outs,ins);
-//            System.out.println(ts1+ " " + varName1+ " "+ b2hex);
-//            fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
-//
-//
+            String varName1 = "vPV";
+            byte [] varBs1  = new byte[4];
+            createByte2Send(varName1, varBs1,201,0,0,0);
 
-
-
-            //================================================================================== command
-            String varName5 = "KwH";
-            byte [] varBs5  = new byte[4];
-            createByte2Send(varName5, varBs5,205,0,0,1);
-
-            Timestamp ts5=null;
+            Timestamp ts1=null;
             //get timestamp
-            Date date5 = new Date();
-            long time5 = date5.getTime();
-            ts5 = new Timestamp(time5);
+            Date date1 = new Date();
+            long time1 = date1.getTime();
+            ts1 = new Timestamp(time1);
 
-            outs.write(varBs5);
-            outs.write(varBs5);
+            outs.write(varBs1);
+            outs.write(varBs1);
+            outs.write(varBs1);
             Thread.sleep(4000);
-            outs.write(varBs5);
-            outs.write(varBs5);
-            outs.write(varBs5);
-            outs.write(varBs5);
-            outs.write(varBs5);
+            outs.write(varBs1);
+            outs.write(varBs1);
+            outs.write(varBs1);
+            outs.write(varBs1);
+            ins.read(varBs1);
+            b2hex = bytesToHex(varBs1);
+            b2hex = checkValidHeader(b2hex,"89",varBs1,1000,outs,ins);
+            System.out.println(ts1+ " " + varName1+ " "+ b2hex);
+            fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
 
-            ins.read(varBs5);
-            b2hex = bytesToHex(varBs5);
-            b2hex = checkValidHeader(b2hex,"8D",varBs5,1000,outs,ins);
-            System.out.println(ts5+ " " + varName5+ " "+ b2hex);
-            fw.write(ts5+ "\t" + varName5+ "\t"+ b2hex+"\n");
+
 
 
 

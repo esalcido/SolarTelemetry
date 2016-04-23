@@ -32,8 +32,15 @@ public class Scrape {
         long time2 = date2.getTime();
         ts2= new Timestamp(time);
 
-        String htmlfileDirectory = "/home/edwardsalcido/Desktop/weatherdata/htmldata/"+ts+"-wunderground-html.txt";
-        String intellicastDirectory = "/home/edwardsalcido/Desktop/weatherdata/htmldata/"+ts+"-intellicast-html.txt";
+
+        String userHome = System.getProperty("user.home");
+        if(userHome.equals("/home/root") ){
+            userHome = "/home/rainmodulator";
+        }
+
+
+        String htmlfileDirectory = userHome +"/scrape/htmldata/"+ts+"-wunderground-html.txt";
+        String intellicastDirectory = userHome +"/scrape/htmldata/"+ts+"-intellicast-html.txt";
 
 
         //files
@@ -54,6 +61,7 @@ public class Scrape {
         }
 
         //grab data from web and save to a file
+
         String urlWunder = "https://www.wunderground.com/history/airport/KVNY/2016/4/22/DailyHistory.html?req_city=Valley+Glen&req_state=CA&req_statename=&reqdb.zip=91401&reqdb.magic=3&reqdb.wmo=99999";
         writeToFile(urlWunder, bw);
 
@@ -63,30 +71,13 @@ public class Scrape {
 
         //=========================================================================================================================================
         //data
-        File dataF = new File("/home/edwardsalcido/Desktop/weatherdata/data/weatherdata.txt");
+
+        File dataF = new File(userHome+"/scrape/data/weatherdata.txt");
         FileWriter datawriter = new FileWriter(dataF,true);
         BufferedWriter dataBuffer = new BufferedWriter(datawriter);
         if(!wundergroundhtml.exists() ){
             wundergroundhtml.createNewFile();
         }
-
-        //data for wunderground
-//        File datahtml = new File("/home/edwardsalcido/Desktop/weatherdata/data/"+ts+"-wunderground-data-html.txt");
-//        FileWriter datafw = new FileWriter(datahtml,true);
-//        BufferedWriter databw = new BufferedWriter(datafw);
-//        if(!wundergroundhtml.exists() ){
-//            wundergroundhtml.createNewFile();
-//        }
-//
-//        //data for intellicast
-//        File datahtmlintellicast = new File("/home/edwardsalcido/Desktop/weatherdata/data/"+ts+"-intellicast-data-html.txt");
-//        FileWriter datafwintellicast = new FileWriter(datahtmlintellicast,true);
-//        BufferedWriter databwintellicast = new BufferedWriter(datafwintellicast);
-//        if(!intellicasthtml.exists() ){
-//            intellicasthtml.createNewFile();
-//        }
-
-
 
 
         //extract data from the saved file
