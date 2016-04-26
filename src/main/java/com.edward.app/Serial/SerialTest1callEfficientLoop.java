@@ -4,13 +4,12 @@ import gnu.io.NRSerialPort;
 
 import java.io.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by edwardsalcido on 4/9/16.
  */
-public class SerialTest1callEfficient {
+public class SerialTest1callEfficientLoop {
 
     public static void main(String [] args) {
 
@@ -43,16 +42,19 @@ public class SerialTest1callEfficient {
             ts1 = new Timestamp(time1);
 
             String varName1 = "vPV";
-
+            byte [] vPv = new byte[4];
+            byte [] vBatt = new byte[4];
             byte [] request = new byte[4];
             byte [] response = new byte[4];
 
             //==============================================================
-            request = new byte[]{(byte)0b11001001,0,0,0};//vPv
-            response = getResponse(request,ins,outs);
+            vPv = new byte[]{(byte)0b11001001,0,0,0};//vPv
+            vBatt = new byte[]{(byte)0b11001010,0,0,3};
 
+            Request req = new Request("vPv",0b11001001,0,0,0);
+            Request reqVbatt = new Request(vBatt);
 
-
+            response = getResponse(req.getRequest(),ins,outs);
 
             b2hex = bytesToHex(response);
 
@@ -61,22 +63,25 @@ public class SerialTest1callEfficient {
             double data2 = response[2];
             double data = data2/10;
 
-            System.out.println(ts1+ " " + varName1+ " "+ b2hex);
+            //System.out.println(ts1+ " " + varName1+ " "+ b2hex);
+            //fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
+            System.out.println(ts1+ " " + varName1+ " "+ data );
             fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
 
 
-
             //===============================================================
-            request = new byte[]{(byte)0b11001010,0,0,3};//vBatt
 
-            response = getResponse(request,ins,outs);
+            response = getResponse(reqVbatt.getRequest(),ins,outs);
 
             b2hex = bytesToHex(response);
             varName1 = "vBatt";
 
              data = response[2]/10;
-            System.out.println(ts1+ " " + varName1+ " "+ b2hex);
+//            System.out.println(ts1+ " " + varName1+ " "+ b2hex);
+//            fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
+            System.out.println(ts1+ " " + varName1+ " " +data);
             fw.write(ts1+ "\t" + varName1+ "\t"+ b2hex+"\n");
+
 
 
 
@@ -127,6 +132,5 @@ public class SerialTest1callEfficient {
         //System.out.println("var num from response: " + (byte)varNumResponse);
         return response;
     }
-
 
 }
